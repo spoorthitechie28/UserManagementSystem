@@ -1,160 +1,304 @@
-# User Management System using Spring Boot & JWT
 
-A secure Role-Based User Management System built using Spring Boot, Spring Security, JWT Authentication, MySQL, and REST APIs.
+# Secure User Management System using Spring Boot, JWT & Role-Based Access Control
 
----
+A production-ready backend application built using Spring Boot and Spring Security that provides secure authentication and authorization using JWT tokens and Role-Based Access Control (RBAC).
 
-## Features
-
-- User Registration
-- User Login Authentication
-- JWT Token Generation
-- Role-Based Authorization
-- Admin and User Access Control
-- Password Encryption using BCrypt
-- REST API Architecture
-- MySQL Database Integration
-- Spring Security Implementation
-- Validation using DTOs
+This project is designed to simulate a real-world enterprise user management platform where administrators can manage users securely while enforcing protected access to APIs.
 
 ---
 
-## Technologies Used
+# Project Highlights
 
-- Java 17
-- Spring Boot
-- Spring Security
-- JWT (JSON Web Token)
-- Spring Data JPA
-- Hibernate
-- MySQL
-- Maven
-- Postman
+- Secure Authentication using JWT
+- Role-Based Authorization (ADMIN / USER)
+- RESTful API Architecture
+- BCrypt Password Encryption
+- Spring Security Integration
+- MySQL Database Connectivity
+- DTO Validation & Exception Handling
+- Layered Architecture
+- Clean and Scalable Backend Design
 
 ---
 
-## Project Structure
+# Tech Stack
+
+| Technology | Usage |
+|---|---|
+| Java 17 | Core Programming |
+| Spring Boot | Backend Framework |
+| Spring Security | Authentication & Authorization |
+| JWT | Secure Token Authentication |
+| Spring Data JPA | Database Operations |
+| Hibernate | ORM Framework |
+| MySQL | Relational Database |
+| Maven | Dependency Management |
+| Postman | API Testing |
+
+---
+
+# System Architecture
+
+```text
+Client Request
+      ↓
+JWT Authentication Filter
+      ↓
+Spring Security
+      ↓
+Controller Layer
+      ↓
+Service Layer
+      ↓
+Repository Layer
+      ↓
+MySQL Database
+````
+
+---
+
+# Project Structure
 
 ```text
 src/main/java/com/example
 
-├── config
-├── controller
-├── dto
-├── entity
-├── repository
-├── security
-└── service
+├── config          -> Security & Application Configuration
+├── controller      -> REST Controllers
+├── dto             -> Request & Response DTOs
+├── entity          -> Database Entities
+├── repository      -> JPA Repositories
+├── security        -> JWT & Security Classes
+├── service         -> Business Logic
+└── exception       -> Global Exception Handling
 ```
 
 ---
 
-## API Endpoints
+# Features Implemented
 
-### Authentication APIs
+## Authentication & Security
 
-| Method | Endpoint | Description |
-|--------|-----------|-------------|
-| POST | `/auth/register` | Register new user |
-| POST | `/auth/login` | Login user |
-
----
-
-### Admin APIs
-
-| Method | Endpoint | Access |
-|--------|-----------|--------|
-| GET | `/admin/home` | ADMIN |
-| GET | `/admin/users` | ADMIN |
-| GET | `/admin/user/{id}` | ADMIN |
-| PUT | `/admin/user/{id}` | ADMIN |
-| DELETE | `/admin/user/{id}` | ADMIN |
+* User Registration
+* Secure User Login
+* JWT Token Generation & Validation
+* BCrypt Password Hashing
+* Stateless Authentication
+* Role-Based API Protection
 
 ---
 
-### User APIs
+## User Management
 
-| Method | Endpoint | Access |
-|--------|-----------|--------|
-| GET | `/user/home` | USER / ADMIN |
+* Create Users
+* View User Details
+* Update User Information
+* Delete Users
+* Admin/User Access Separation
 
 ---
 
-## Registration Request Example
+## Validation & Error Handling
+
+* DTO-Based Validation
+* Proper HTTP Status Responses
+* Centralized Exception Handling
+
+---
+
+# API Endpoints
+
+## Authentication APIs
+
+| Method | Endpoint         | Description                      |
+| ------ | ---------------- | -------------------------------- |
+| POST   | `/auth/register` | Register a new user              |
+| POST   | `/auth/login`    | Authenticate user & generate JWT |
+
+---
+
+## Admin APIs
+
+| Method | Endpoint           | Access |
+| ------ | ------------------ | ------ |
+| GET    | `/admin/home`      | ADMIN  |
+| GET    | `/admin/users`     | ADMIN  |
+| GET    | `/admin/user/{id}` | ADMIN  |
+| PUT    | `/admin/user/{id}` | ADMIN  |
+| DELETE | `/admin/user/{id}` | ADMIN  |
+
+---
+
+## User APIs
+
+| Method | Endpoint     | Access       |
+| ------ | ------------ | ------------ |
+| GET    | `/user/home` | USER / ADMIN |
+
+---
+
+# Sample Registration Request
 
 ```json
 {
-  "name":"Admin",
-  "email":"admin@gmail.com",
-  "password":"1234",
-  "role":"ADMIN"
+  "name": "Admin",
+  "email": "admin@gmail.com",
+  "password": "1234",
+  "role": "ADMIN"
 }
 ```
 
 ---
 
-## Login Request Example
+# Sample Login Request
 
 ```json
 {
-  "email":"admin@gmail.com",
-  "password":"1234"
+  "email": "admin@gmail.com",
+  "password": "1234"
 }
 ```
 
 ---
 
-## Authorization Header
+# JWT Authorization Header
 
 ```text
-Authorization : Bearer your_jwt_token
+Authorization: Bearer your_jwt_token
 ```
 
 ---
 
-## Database Configuration
+# Database Configuration
 
-Update `application.properties`:
+Update your `application.properties` file:
 
 ```properties
 spring.datasource.url=jdbc:mysql://localhost:3306/CSRDB
 spring.datasource.username=root
 spring.datasource.password=your_password
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
 ```
 
 ---
 
-## How to Run the Project
+# How to Run the Application
 
-1. Clone the repository
-2. Open project in Eclipse or IntelliJ
-3. Configure MySQL database
-4. Update Maven dependencies
-5. Run Spring Boot application
-6. Test APIs using Postman
+## 1. Clone Repository
 
----
-
-## Security Features
-
-- JWT Authentication
-- Stateless Session Management
-- Role-Based Access
-- Password Encryption
-- Secure API Access
+```bash
+git clone https://github.com/your-username/UserManagementSystem.git
+```
 
 ---
 
-## Future Enhancements
+## 2. Open Project
 
-- React Frontend
-- Swagger Documentation
-- Refresh Tokens
-- Docker Deployment
-- Cloud Deployment (AWS)
+Import the project into:
+
+* Spring Tool Suite (STS)
+* Eclipse
+* IntelliJ IDEA
 
 ---
 
-## Author
+## 3. Configure MySQL
 
-Spoorthi K
+Create database:
+
+```sql
+CREATE DATABASE CSRDB;
+```
+
+Update MySQL credentials in `application.properties`.
+
+---
+
+## 4. Install Dependencies
+
+```bash
+mvn clean install
+```
+
+---
+
+## 5. Run the Application
+
+```bash
+mvn spring-boot:run
+```
+
+Application runs on:
+
+```text
+http://localhost:8080
+```
+
+---
+
+# Testing APIs
+
+Use:
+
+* Postman
+* Thunder Client
+* Swagger (Future Enhancement)
+
+Test:
+
+* Registration
+* Login
+* JWT Authorization
+* Admin/User Protected APIs
+
+---
+
+# Security Features
+
+* JWT-Based Authentication
+* Role-Based Access Control
+* BCrypt Password Encryption
+* Stateless Session Management
+* Protected REST APIs
+* Secure Endpoint Authorization
+
+---
+
+# Future Enhancements
+
+* React Frontend Integration
+* Docker Containerization
+* AWS Cloud Deployment
+* Swagger API Documentation
+* Refresh Token Mechanism
+* Email Verification
+* Password Reset Feature
+* Audit Logging
+* Microservices Architecture
+
+---
+
+# Learning Outcomes
+
+Through this project, I gained hands-on experience in:
+
+* Spring Boot Development
+* REST API Design
+* Authentication & Authorization
+* JWT Security Implementation
+* Database Integration
+* Layered Backend Architecture
+* Real-World Backend Development Practices
+
+---
+
+# Author
+
+## Spoorthi K
+
+
+
+
+```
+```
