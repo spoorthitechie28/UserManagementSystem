@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>JWT Login Demo</title>
+</head>
+
+<body>
+
+    <h2>Login</h2>
+
+    <input type="text"
+           id="username"
+           placeholder="Enter Email">
+
+    <br><br>
+
+    <input type="password"
+           id="password"
+           placeholder="Enter Password">
+
+    <br><br>
+
+    <button onclick="login()">Login</button>
+
+    <h3 id="result"></h3>
+
+    <button onclick="fetchUsers()">Fetch Users</button>
+
+    <h2>Users List</h2>
+
+    <ul id="users"></ul>
+
+    <script>
+
+        async function login() {
+
+            const email =
+                document.getElementById("username").value;
+
+            const password =
+                document.getElementById("password").value;
+
+            const response = await fetch(
+                "http://localhost:8080/auth/login",
+
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+
+                        email: email,
+
+                        password: password
+                    })
+                });
+
+            const token = await response.text();
+
+            localStorage.setItem("token", token);
+
+            // TRY USER API FIRST
+
+            const userResponse = await fetch(
+                "http://localhost:8080/user/home",
+
+                {
+                    method: "GET",
+
+                    headers: {
+                        Authorization: "Bearer " + token
+                    }
+                });
+
+            const userText =
+                await userResponse.text();
+
+            // TRY ADMIN API
+
+            const adminResponse = await fetch(
+                "http://localhost:8080/admin/home",
+
+                {
+                    method: "GET",
+
+                    headers: {
+                        Authorization: "Bearer " + token
+                    }
+                });
+
+            // IF ADMIN LOGIN
+
+            if (adminResponse.status === 200) {
+
+                const adminText =
+                    await adminResponse.text();
+
+                document.getElementById("result")
+                    .innerText = adminText;
+            }
+
+            // ELSE USER LOGIN
+
+            else {
+
+                document.getElementById("result")
+                    .innerText = userText;
+            }
+        }
+
+        async function fetchUsers() {
+
+            const token =
+                localStorage.getItem("token");
+
+            const response = await fetch(
+                "http://localhost:8080/admin/users",
+
+                {
+                    method: "GET",
+
+                    headers: {
+                        Authorization: "Bearer " + token
+                    }
+                });
+
+            // IF USER TRIES ADMIN API
+
+            if (response.status === 403) {
+
+                alert(
+                    "Access Denied! Only ADMIN can fetch users."
+                );
+
+                return;
+            }
+
+            const users = await response.json();
+
+            let output = "";
+
+            users.forEach(user => {
+
+                output += `
+                    <li>
+                        ${user.name}
+                        -
+                        ${user.email}
+                        -
+                        ${user.role}
+                    </li>
+                `;
+            });
+
+            document.getElementById("users")
+                .innerHTML = output;
+        }
+
+    </script>
+
+</body>
+
+</html>
